@@ -1,0 +1,10 @@
+item:
+  name: "&5&lPrison Realm"
+  lore:
+    - "&7A cursed sealing object."
+    - "&dOnly the owner can complete its ritual."
+  custom-model-data: 26001
+  glow: true
+# The admin prison location is saved automatically by /prisonrealm setprison.
+# The sealed-player list is saved automatically as well.
+sealed-players: []

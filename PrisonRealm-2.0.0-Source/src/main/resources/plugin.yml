@@ -1,0 +1,30 @@
+name: PrisonRealm
+version: '2.0.0'
+main: com.rosey.prisonrealm.PrisonRealmPlugin
+api-version: '26.2'
+author: Rosey
+description: Automatic crystal ritual, owner-only sealing, and Nether imprisonment.
+commands:
+  prisonrealm:
+    description: Administer Prison Realm.
+    usage: /prisonrealm <give|setprison|status|sealed|release|reload>
+    aliases: [prison]
+  freeze:
+    description: Removed; freezing is automatic through the Prison Realm ritual.
+    usage: /freeze
+  seal:
+    description: Seal the target of your own completed Prison Realm ritual.
+    usage: /seal <player>
+  unseal:
+    description: Release a player you personally sealed.
+    usage: /unseal <player>
+  player:
+    description: Prison Realm player information.
+    usage: /player seal
+permissions:
+  prisonrealm.admin:
+    description: Administer Prison Realm and release any prisoner.
+    default: op
+  prisonrealm.use:
+    description: Place and use Prison Realm.
+    default: true
