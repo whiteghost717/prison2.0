@@ -2,7 +2,9 @@ name: Build PrisonRealm
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 permissions:
@@ -21,25 +23,33 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: gradle
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Show repository files
+      - name: Build PrisonRealm
+        shell: bash
         run: |
-          echo "Repository contents:"
+          set -e
+
+          echo "Checking repository folders..."
           ls -la
-          if [ -f "PrisonRealm/build.gradle" ]; then
-            cd PrisonRealm
+
+          if [ -f "PrisonRealm-2.0.0-Source/build.gradle" ]; then
+            cd "PrisonRealm-2.0.0-Source"
+          elif [ -f "PrisonRealm-2.0.0-Source/PrisonRealm/build.gradle" ]; then
+            cd "PrisonRealm-2.0.0-Source/PrisonRealm"
+          elif [ -f "PrisonRealm/build.gradle" ]; then
+            cd "PrisonRealm"
           elif [ -f "build.gradle" ]; then
-            cd .
+            echo "Building from repository root"
           else
-            echo "ERROR: build.gradle was not found in repository root or PrisonRealm/"
-            find . -maxdepth 5 -type f \\( -name build.gradle -o -name settings.gradle \\)
+            echo "ERROR: build.gradle not found!"
+            find . -maxdepth 6 -type f -name "build.gradle" -print
             exit 1
           fi
-          echo "Building from: $(pwd)"
+
+          echo "Build directory: $PWD"
           gradle build --stacktrace
 
       - name: Upload plugin JAR
@@ -47,6 +57,7 @@ jobs:
         with:
           name: PrisonRealm-JAR
           path: |
+            PrisonRealm-2.0.0-Source/**/build/libs/*.jar
             PrisonRealm/build/libs/*.jar
             build/libs/*.jar
           if-no-files-found: error
